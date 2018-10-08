@@ -258,7 +258,7 @@ ggplot(data = tmp) +
 ```{r}
 tmp2 <- tmp %>% gather(f, y, -x)
 
-ggplot(data = tmp2) +
-  geom_line(mapping = aes(x = x, y = y, color = f))
+ggplot(data = tmp2, mapping = aes(x = x, y = y, color = f)) +
+  geom_line()
 ```
 

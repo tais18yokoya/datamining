@@ -1,29 +1,7 @@
-# 回帰1
-
-## 準備：関数（1変数）の描画
-
-```{r}
-library(tidyverse)
-
-tmp <- data.frame(x = seq(from = 0, to = 10,, length.out = 100))
-
-tmp$y <- sin(tmp$x)
-
-head(tmp)
-```
-
-```{r}
-ggplot(mapping = aes(x = x, y = y)) +
-  geom_line(data = tmp)
-```
-
-**練習：y=6 x - 4（-1 <= x <= 2）のグラフを描いてください。**
-
-**練習：y=3 x^2 - 4 x（-1 <= x <= 2）のグラフを描いてください。**
-
-**練習：y=x^3 - 2 x^2（-1 <= x <= 2）のグラフを描いてください。**
-
-**レポート課題：y=sin(10Π x)のグラフを描いてください。（Πは円周率）**
+---
+title: "02_回帰1"
+output: html_document
+---
 
 ## 例題1：⾃動⾞の速度と停⽌距離
 

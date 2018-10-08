@@ -1,29 +1,34 @@
-# 準備
+---
+title: "01_準備"
+output: html_document
+---
+
+## Docker
 
 **注意：Windows ProでHyper-Vを使っている人は矢吹に相談してから帰ること**
 
 次回までにやっておくこと。（ネットワークが遅いと1時間程度かかることに注意）
 
-## Step 1（OSによる）
+### Step 1（OSによる）
 
-### Windowsの場合
+#### Windowsの場合
 
 1. [Docker Toolsbox for Windows](https://docs.docker.com/toolbox/toolbox_install_windows/)をインストールし，Windowsを再起動する。**プログラムは「c:/Program Files/Docker Toolbox」にインストールされるが，これを勝手に移動してはいけない。（これはDockerに限ったことではない。）**
 2. Docker QuickStart Terminalを起動し（1回目は時間がかかる），`"C:\Program Files\Oracle\VirtualBox\VBoxManage.exe" controlvm "default" natpf1 "jupyter,tcp,127.0.0.1,8888,,8888"
 `を実行する。
 
-### macOSの場合
+#### macOSの場合
 1. [Docker for Mac](https://store.docker.com/editions/community/docker-ce-desktop-mac)をインストールする。（アカウント作成が必要かもしれない。）
 2. 「端末」を起動する。
 
-## Step 2（OSによらない）
+### Step 2（OSによらない）
 
 3. `docker pull jupyter/datascience-notebook`を実行する（時間がかかる）。
 4. `docker images`を実行すると，「 jupyter/datascience-notebook 」と表示されることを確認する。
 
 以下では，Docker QuickStart Terminal（Windowsの場合）と端末（macOSの場合）を，**ターミナル**と呼ぶことにする。
 
-## Step 3（作業フォルダ）
+### Step 3（作業フォルダ）
 
 5. ターミナルで以下を実行し，作業用のフォルダを作る。（Windowsではc:/Users/ユーザ名/mining，macOSでは~/miningが作業フォルダになる。）
 
@@ -31,7 +36,7 @@
 mkdir "$HOME/mining"
 ```
 
-## Step 4（コンテナの生成）
+### Step 4（コンテナの生成）
 
 6. コンテナを生成・起動する。
 
@@ -53,14 +58,14 @@ docker container start jupyter
 
 9. ブラウザからhttp://localhost:8888/ にアクセスする。
 
-## Step 5（R）
+### Step 5（R）
 
 10. フォルダ/mining にアクセスする。
 11. New→RでRのセッションを起動する。
 12. 作業フォルダにUntitled.ipynbというファイルができていることを確認する。
 13. `sessionInfo()`と入力し，`Shift+Enter`。
 
-## Step 6（コンテナの削除。通常はやらなくてよい）
+### Step 6（コンテナの削除。通常はやらなくてよい）
 
 14. コンテナを削除する。
 
@@ -72,3 +77,187 @@ docker container rm jupyter
 もう一度生成するときは，上記の`docker container run...`を実行すればよい。
 
 **練習：Rのセッションで20の階乗，つまり1×2×･･･×20を計算せよ。**
+
+## データの表現
+
+### 数値
+
+```{r}
+a <- 2
+b <- 3
+```
+
+```{r}
+c <- a + b
+c
+```
+
+```{r}
+(d <- a * b)
+```
+
+### 文字列
+
+```{r}
+s <- 'abc'
+substr(x = s, start = 2, stop = 3)
+```
+
+```{r}
+t <- "def"
+paste(s, t, sep = ':')
+```
+
+### ベクトル
+
+```{r}
+vec1 <- c(1, 2, 3)
+vec1[3]
+```
+
+```{r}
+vec1 + 10
+```
+
+```{r}
+vec1 * 10
+```
+
+```{r}
+vec2 <- c(1, 10, 100)
+vec1 + vec2
+```
+
+```{r}
+vec1 * vec2
+```
+
+↑内積ではないことに注意
+
+```{r}
+vec1 %*% vec2
+```
+
+#### seq
+
+```{r}
+(x <- 1:10)
+```
+
+（Pythonのrange(1, 10)の結果は1以上9以下の整数だった。）
+
+```{r}
+(x <- seq(from = 0, to = 10,, by = 0.1))
+```
+
+```{r}
+(x <- seq(from = 0, to = 10,, length.out = 100))
+```
+
+### 因子
+
+```{r}
+scores <- c('A', 'B', 'C', 'A', 'B')
+scores[1] <- 'F'
+scores
+```
+
+```{r}
+scores <- factor(c('A', 'B', 'C', 'A', 'B'))
+scores[1] <- 'F'
+```
+
+### データフレーム
+
+```{r}
+(people <- data.frame(身長 = c(160, 170, 180), 体重 = c(60, 70, 80)))
+```
+
+```{r}
+people[2,]
+```
+
+```{r}
+people[c(1, 2),]
+```
+
+```{r}
+people[-3,]
+```
+
+```{r}
+people[-c(1, 3),]
+```
+
+```{r}
+people[, 2]
+```
+
+```{r}
+people[, c(1, 2)]
+```
+
+```{r}
+people[, -1]
+```
+
+```{r}
+people[, -c(1, 2)]
+```
+
+```{r}
+people$視力 <- c(1, 1.2, 2.0)
+people
+```
+
+```{r}
+row.names(people) <- c('A', 'B', 'C')
+people
+```
+
+## 関数（1変数）の描画
+
+```{r}
+library(tidyverse)
+
+tmp <- data.frame(x = seq(from = 0, to = 10,, length.out = 100))
+
+tmp$sin <- sin(tmp$x)
+
+head(tmp)
+```
+
+```{r}
+ggplot(mapping = aes(x = x, y = sin)) +
+  geom_line(data = tmp)
+```
+**練習：y=6 x - 4（-1 <= x <= 2）のグラフを描いてください。**
+
+**練習：y=3 x^2 - 4 x（-1 <= x <= 2）のグラフを描いてください。**
+
+**練習：y=x^3 - 2 x^2（-1 <= x <= 2）のグラフを描いてください。**
+
+**レポート課題：y=sin(10Π x)のグラフを描いてください。（Πは円周率）**
+
+### 発展1
+
+```{r}
+tmp$cos <- cos(tmp$x)
+head(tmp)
+```
+
+```{r}
+ggplot() +
+  geom_line(data = tmp, mapping = aes(x = x, y = sin), color = 'cyan') +
+  geom_line(data = tmp, mapping = aes(x = x, y = cos), color = 'magenta')
+```
+
+### 発展2
+
+```{r}
+tmp2 <- tmp %>% gather(f, y, -x)
+
+ggplot(data = tmp2) +
+  geom_line(mapping = aes(x = x, y = y, color = f))
+```
+

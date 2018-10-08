@@ -16,7 +16,7 @@ output: html_document
 1. [Docker Toolsbox for Windows](https://docs.docker.com/toolbox/toolbox_install_windows/)をインストールし，Windowsを再起動する。**プログラムは「c:/Program Files/Docker Toolbox」にインストールされるが，これを勝手に移動してはいけない。（これはDockerに限ったことではない。）**
 2. Docker QuickStart Terminalを起動し（1回目は時間がかかる），以下を実行する。
 
-```{bash}
+```{bash, eval=FALSE}
 "C:\Program Files\Oracle\VirtualBox\VBoxManage.exe" controlvm "default" natpf1 "jupyter,tcp,127.0.0.1,8888,,8888"
 ```
 
@@ -35,7 +35,7 @@ output: html_document
 
 5. ターミナルで以下を実行し，作業用のフォルダを作る。（Windowsではc:/Users/ユーザ名/mining，macOSでは~/miningが作業フォルダになる。）
 
-```{bash}
+```{bash, eval=FALSE}
 mkdir "$HOME/mining"
 ```
 
@@ -43,19 +43,19 @@ mkdir "$HOME/mining"
 
 6. コンテナを生成・起動する。
 
-```{bash}
+```{bash, eval=FALSE}
 docker container run --name jupyter -d -p 8888:8888 -v "$HOME/mining":/home/jovyan/mining jupyter/datascience-notebook start-notebook.sh --NotebookApp.token=''
 ```
 
 7. 練習のため，コンテナを一度停止させる。
 
-```{bash}
+```{bash, eval=FALSE}
 docker container stop jupyter
 ```
 
 8. コンテナの起動
 
-```{bash}
+```{bash, eval=FALSE}
 docker container start jupyter
 ```
 
@@ -72,7 +72,7 @@ docker container start jupyter
 
 14. コンテナを削除する。
 
-```{bash}
+```{bash, eval=FALSE}
 docker container stop jupyter
 docker container rm jupyter
 ```
@@ -190,19 +190,11 @@ people[-c(1, 3),]
 ```
 
 ```{r}
-people[, 体重]
-```
-
-```{r}
 people[, 2]
 ```
 
 ```{r}
 people[, c(1, 2)]
-```
-
-```{r}
-people[, -身長]
 ```
 
 ```{r}
@@ -254,7 +246,7 @@ ggplot(data = tmp, mapping = aes(x = X, y = sin)) +
 ### 発展1
 
 ```{r}
-tmp$cos <- cos(tmp$x)
+tmp$cos <- cos(tmp$X)
 head(tmp)
 ```
 
@@ -267,9 +259,9 @@ ggplot(data = tmp) +
 ### 発展2
 
 ```{r}
-tmp2 <- tmp %>% gather(f, y, -x)
+tmp2 <- tmp %>% gather(f, Y, -X)
 
-ggplot(data = tmp2, mapping = aes(x = x, y = y, color = f)) +
+ggplot(data = tmp2, mapping = aes(x = X, y = Y, color = f)) +
   geom_line()
 ```
 

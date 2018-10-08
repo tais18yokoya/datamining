@@ -7,7 +7,7 @@ output: html_document
 
 **注意：Windows ProでHyper-Vを使っている人は矢吹に相談してから帰ること**
 
-次回までにやっておくこと。（ネットワークが遅いと1時間程度かかることに注意）
+32ビット版のWindowsでは，Dockerは動作しない。32ビット版を使っている場合は，64ビット版にアップグレードすることを検討してほしい。できない場合は，R（とRStudio）をインストールすれば，だいたいのことはできるが，この資料と動作を合わせるのはかなり面倒である。（追加ライブラリのインストール，文字コード設定の変更，環境変数の設定などが必要になる。）
 
 ### Step 1（OSによる）
 
@@ -22,14 +22,14 @@ output: html_document
 
 #### macOSの場合
 1. [Docker for Mac](https://store.docker.com/editions/community/docker-ce-desktop-mac)をインストールする。（アカウント作成が必要かもしれない。）
-2. 「端末」を起動する。
+2. 「ターミナル」を起動する。
 
 ### Step 2（OSによらない）
 
 3. `docker pull jupyter/datascience-notebook`を実行する（時間がかかる）。
 4. `docker images`を実行すると，「 jupyter/datascience-notebook 」と表示されることを確認する。
 
-以下では，Docker QuickStart Terminal（Windowsの場合）と端末（macOSの場合）を，**ターミナル**と呼ぶことにする。
+以下では，Docker QuickStart Terminal（Windowsの場合）とターミナル（macOSの場合）の両方を**ターミナル**と呼ぶことにする。
 
 ### Step 3（作業フォルダ）
 
@@ -93,7 +93,14 @@ c
 ```
 
 ```{r}
-(d <- a * b)
+c <- a + b
+c
+```
+
+次のようにすると，上の2行が1行で済むようになるが，この資料ではこの記法は使わない。
+
+```{r}
+(c <- a + b)
 ```
 
 ### 文字列
@@ -138,33 +145,33 @@ vec1 * vec2
 vec1 %*% vec2
 ```
 
-#### seq
+#### 等間隔の数からなるベクトル
 
 ```{r}
-(x <- 1:10)
+1:10
 ```
 
 （Pythonのrange(1, 10)の結果は1以上9以下の整数だった。）
 
 ```{r}
-(x <- seq(from = 0, to = 10, by = 0.1))
+seq(from = 0, to = 10, by = 0.1)
 ```
 
 ```{r}
-(x <- seq(from = 0, to = 10, length.out = 100))
+seq(from = 0, to = 10, length.out = 100)
 ```
 
 ### 因子
 
 ```{r}
-scores <- c('A', 'B', 'C', 'A', 'B')
-scores[1] <- 'F'
-scores
+scores <- factor(c('A', 'B', 'C', 'A', 'B'))
+str(scores)
+scores <- factor(c('A', 'B', 'C', 'A', 'B'))
 ```
 
 ```{r}
-scores <- factor(c('A', 'B', 'C', 'A', 'B'))
-scores[1] <- 'F'
+scores <- c('A', 'B', 'C', 'A', 'B')
+str(scores)
 ```
 
 ### データフレーム
@@ -230,11 +237,20 @@ head(tmp)
 ```{r}
 plot(tmp)
 ```
+```{r}
+plot(sin, 0, 10)
+```
+
+```{r}
+ggplot(data = tmp, mapping = aes(x = X, y = sin)) +
+  geom_point()
+```
 
 ```{r}
 ggplot(data = tmp, mapping = aes(x = X, y = sin)) +
   geom_line()
 ```
+
 **練習：y=6 x - 4（-1 <= x <= 2）のグラフを描いてください。**
 
 **練習：y=3 x^2 - 4 x（-1 <= x <= 2）のグラフを描いてください。**
@@ -243,7 +259,7 @@ ggplot(data = tmp, mapping = aes(x = X, y = sin)) +
 
 **レポート課題：y=sin(10Π x)のグラフを描いてください。（Πは円周率）**
 
-### 発展1
+### 発展1：複数のグラフを描く
 
 ```{r}
 tmp$cos <- cos(tmp$X)
@@ -259,9 +275,25 @@ ggplot(data = tmp) +
 ### 発展2
 
 ```{r}
-tmp2 <- tmp %>% gather(f, Y, -X)
+tmp2 <- tmp %>% gather(F, Y, -X)
+head(tmp2)
+```
 
-ggplot(data = tmp2, mapping = aes(x = X, y = Y, color = f)) +
+```{r}
+ggplot(data = tmp2, mapping = aes(x = X, y = Y, color = F)) +
   geom_line()
 ```
 
+## 関数の呼び出し方
+
+```{r}
+seq(from = 0, to = 10, by = 2)
+```
+
+`set()`の使い方は`?seq`で使い方がわかる。
+
+定義におけるパラメータの順番がわかるなら，次のように簡単に書いてもよい。
+
+```{r}
+seq(0, 10, 2)
+```

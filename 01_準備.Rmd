@@ -269,7 +269,8 @@ head(tmp)
 ```{r}
 ggplot(data = tmp) +
   geom_line(mapping = aes(x = X, y = sin), color = 'cyan') +
-  geom_line(mapping = aes(x = X, y = cos), color = 'magenta')
+  geom_line(mapping = aes(x = X, y = cos), color = 'magenta') + 
+  labs(x = 'x', y = 'y')
 ```
 
 ### 発展2
@@ -281,7 +282,8 @@ head(tmp2)
 
 ```{r}
 ggplot(data = tmp2, mapping = aes(x = X, y = Y, color = F)) +
-  geom_line()
+  geom_line() + 
+  labs(x = 'x', y = 'y')
 ```
 
 ## 関数の呼び出し方

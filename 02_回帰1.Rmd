@@ -14,6 +14,8 @@ library(caret)
 my_data <- cars
 ```
 
+データの件数（次元）
+
 ```{r}
 dim(my_data)
 ```
@@ -21,6 +23,8 @@ dim(my_data)
 ```{r}
 head(my_data)
 ```
+
+散布図
 
 ```{r}
 ggplot(data = my_data, mapping = aes(x = speed, y = dist)) +
@@ -30,17 +34,32 @@ ggplot(data = my_data, mapping = aes(x = speed, y = dist)) +
 ### 訓練データとテストデータ
 
 ```{r}
+#ランダムサンプリング
+my_index <- sample(1:nrow(my_data), 0.2 * nrow(my_data))
+
+#授業と同じ結果にする
 my_index <- c(5, 6, 10, 12, 20, 25, 31, 34, 40, 48)
 my_train <- my_data[-my_index,]
 my_test <- my_data[my_index,]
+```
 
+```{r}
+#このコードは理解できなくていい
 tmp <- rbind(data.frame(my_train, data = "training"), data.frame(my_test, data = "test"))
 ggplot(data = tmp, mapping = aes(x = speed, y = dist, color = data)) +
   geom_point() +
   scale_color_manual(values = c(training = "cyan", test = "magenta"))
 ```
 
-### K最近傍法
+### K最近傍法（k-nearest neighbor, k-NN）
+
+下の結果を見ながら，速度が（speed）が21.5の場合の停止距離（dist）を1近傍法で予測せよ。
+
+```{r}
+my_train
+```
+
+練習：速度が5の場合はどうか。
 
 #### 学習
 
@@ -51,6 +70,7 @@ ggplot(data = tmp, mapping = aes(x = speed, y = dist, color = data)) +
 #### 結果
 
 ```{r}
+#このコードは理解できなくていい
 tmp <- data.frame(speed = seq(from = min(my_data$speed), to = max(my_data$speed), length.out = 100))
 tmp$dist <- predict(object = my_result, newdata = tmp)
 
@@ -67,6 +87,7 @@ my_prediction <- predict(object = my_result, newdata = my_test)
 ```
 
 ```{r}
+#このコードは理解できなくていい
 tmp <- data.frame(speed = seq(from = min(my_data$speed), to = max(my_data$speed), length.out = 100))
 tmp$dist <- predict(object = my_result, newdata = tmp)
 
@@ -76,17 +97,25 @@ ggplot(mapping = aes(x = speed, y = dist)) +
   geom_linerange(data = my_test2, mapping = aes(ymin = dist, ymax = prediction), color = "green")
 ```
 
+残差（residual）
+
 ```{r}
 my_test2$residual <- my_test2$dist - my_test2$prediction
 my_test2
 ```
 
+RMSE（Root Mean Square Error）
+
 ```{r}
 sqrt(mean(my_test2$residual^2))
 ```
+
+テストデータにおけるRMSE
 
 ```{r}
 my_prediction <- predict(object = my_result, newdata = my_train)
 my_residual <- my_train$dist - my_prediction
 sqrt(mean(my_residual^2))
 ```
+
+**レポート課題：訓練データとテストデータをランダムサンプリングで作り，訓練データでK最近傍法を実行し，テストデータにおけるRMSEを求めてください。この作業を5回試み，結果を報告してください。**

@@ -7,24 +7,44 @@ output: html_document
 
 ### データの確認
 
+よく使うパッケージ。
+
 ```{r}
 library(tidyverse)
 library(caret)
+```
 
+コードが汎用になるよう，別名を付けておく。
+
+```{r}
 my_data <- cars
 ```
 
-データの件数（次元）
+全件表示，普通はやらない。
 
-```{r}
-dim(my_data)
+```{r, eval=FALSE}
+my_data
 ```
+
+数件だけ表示。
 
 ```{r}
 head(my_data)
 ```
 
-散布図
+件数（次元）確認。
+
+```{r}
+dim(my_data)
+```
+
+散布図描画。
+
+```{r}
+plot(my_data)
+```
+
+散布図描画（その2）。
 
 ```{r}
 ggplot(data = my_data, mapping = aes(x = speed, y = dist)) +
@@ -33,12 +53,27 @@ ggplot(data = my_data, mapping = aes(x = speed, y = dist)) +
 
 ### 訓練データとテストデータ
 
-```{r}
-#ランダムサンプリング
-my_index <- sample(1:nrow(my_data), 0.2 * nrow(my_data))
+ランダムサンプリング（テストデータを指定する番号）。
 
-#授業と同じ結果にする
+```{r}
+sample(1:50, 10)
+```
+
+汎用性のある書き方。
+
+```{r}
+my_index <- sample(1:nrow(my_data), 0.2 * nrow(my_data))
+```
+
+授業と同じ結果にする。
+
+```{r}
 my_index <- c(5, 6, 10, 12, 20, 25, 31, 34, 40, 48)
+```
+
+訓練データとテストデータに分ける。
+
+```{r}
 my_train <- my_data[-my_index,]
 my_test <- my_data[my_index,]
 ```
@@ -53,21 +88,37 @@ ggplot(data = tmp, mapping = aes(x = speed, y = dist, color = data)) +
 
 ### K最近傍法（k-nearest neighbor, k-NN）
 
-下の結果を見ながら，速度が（speed）が21.5の場合の停止距離（dist）を1近傍法で予測せよ。
+下の結果を見ながら，速度が（speed）が21.5の場合の停止距離（dist）を1最近傍法で予測せよ。
 
 ```{r}
 my_train
 ```
 
-練習：速度が5の場合はどうか。
+**練習：速度が5の場合はどうか。**
 
-#### 学習
+#### 訓練
 
 ```{r}
-(my_result <- train(form = dist ~ speed, data = my_train, method = "knn"))
+#訓練 (形式, データ, 手法  )
+#train(form, data,   method)
+
+my_result <- train(form = dist ~ speed, data = my_train, method = "knn")
+my_result
 ```
 
-#### 結果
+#### 予測
+
+```{r}
+#予測   (訓練結果, 新しいデータ)
+#predict(object,   newdata)
+
+predict(object = my_result, newdata = data.frame(speed = 21.5))
+```
+
+```{r}
+my_train$prediction <- predict(object = my_result, newdata = my_train)
+head(my_train)
+```
 
 ```{r}
 #このコードは理解できなくていい
@@ -79,11 +130,36 @@ ggplot(mapping = aes(x = speed, y = dist)) +
   geom_line(data = tmp)
 ```
 
-#### 性能評価
+##### 残差（residual）
 
 ```{r}
-my_prediction <- predict(object = my_result, newdata = my_test)
-(my_test2 <- data.frame(my_test, prediction = my_prediction))
+my_train$residual <- my_train$dist - my_train$prediction
+head(my_train)
+```
+
+##### MSEとRMSE
+
+```{r}
+mean(c(1, 2, 3)^2) == (1^2 + 2^2 + 3^2) / 3
+```
+
+MSE（Mean Square Error）
+
+```{r}
+mean(my_train$residual^2)
+```
+
+
+RMSE（Root Mean Square Error）
+
+```{r}
+sqrt(mean(my_train$residual^2))
+```
+
+#### テスト
+
+```{r}
+my_test$prediction <- predict(object = my_result, newdata = my_test)
 ```
 
 ```{r}
@@ -92,30 +168,26 @@ tmp <- data.frame(speed = seq(from = min(my_data$speed), to = max(my_data$speed)
 tmp$dist <- predict(object = my_result, newdata = tmp)
 
 ggplot(mapping = aes(x = speed, y = dist)) +
-  geom_point(data = my_test2, color = "magenta") +
+  geom_point(data = my_test, color = "magenta") +
   geom_line(data = tmp) +
-  geom_linerange(data = my_test2, mapping = aes(ymin = dist, ymax = prediction), color = "green")
+  geom_linerange(data = my_test, mapping = aes(ymin = dist, ymax = prediction), color = "green")
 ```
 
-残差（residual）
+##### RMSE
 
 ```{r}
-my_test2$residual <- my_test2$dist - my_test2$prediction
-my_test2
+my_test$residual <- my_test$dist - my_test$prediction
+sqrt(mean(my_test$residual^2))
 ```
 
-RMSE（Root Mean Square Error）
+**レポート課題：「訓練データにおけるRMSEとテストデータにおけるRMSEを求める」という作業を10回繰り返し，両者の関係の散布図を描いてください。（散布図には点が10個あるはずです。）**
 
-```{r}
-sqrt(mean(my_test2$residual^2))
+```{r, eval=FALSE}
+#以下を10回繰り返せばよい。
+my_index <- sample(1:nrow(my_data), 0.2 * nrow(my_data))
+my_train <- my_data[-my_index,]
+my_test <- my_data[my_index,]
+#訓練
+#訓練データにおけるRMSEの計算
+#テストデータにおけるRMSEの計算
 ```
-
-テストデータにおけるRMSE
-
-```{r}
-my_prediction <- predict(object = my_result, newdata = my_train)
-my_residual <- my_train$dist - my_prediction
-sqrt(mean(my_residual^2))
-```
-
-**レポート課題：訓練データとテストデータをランダムサンプリングで作り，訓練データでK最近傍法を実行し，テストデータにおけるRMSEを求めてください。この作業を5回試み，結果を報告してください。**

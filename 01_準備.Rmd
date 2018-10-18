@@ -5,6 +5,8 @@ output: html_document
 
 ## Docker
 
+**PCの管理者権限が必要である。**
+
 **注意：Windows ProでHyper-Vを使っている人は矢吹に相談してから帰ること**
 
 32ビット版のWindowsでは，Dockerは動作しない。32ビット版を使っている場合は，64ビット版にアップグレードすることを検討してほしい。できない場合は，R（とRStudio）をインストールすれば，だいたいのことはできるが，この資料と動作を合わせるのはかなり面倒である。（追加ライブラリのインストール，文字コード設定の変更，環境変数の設定などが必要になる。）
@@ -19,6 +21,14 @@ output: html_document
 ```{bash, eval=FALSE}
 "C:\Program Files\Oracle\VirtualBox\VBoxManage.exe" controlvm "default" natpf1 "jupyter,tcp,127.0.0.1,8888,,8888"
 ```
+
+Docker QuickStart Terminalの起動時に次のようなエラーメッセージが表示されることがある。
+
+```
+Error with pre-create check: "This computer doesn't have VT-X/AMD-v enabled. Enabling it in the BIOS is mandatory"
+```
+
+上のようなエラーメッセージが表示される場合は，UEFIの設定画面を開き（スタートボタンを右クリック→設定→更新とセキュリティ→回復→今すぐ再起動する→トラブルシューティング→UEFIファームウェアの設定→再起動），「Virtual Technology」や「Virtualization Technology」などという項目を見つけ，有効にする。UEFIの設定画面はPCの起動時に開くこともできるが，その方法は機種によって異なる（起動時にdelete・F1・Alt+F4などのキーを押し続ける）。
 
 #### macOSの場合
 1. [Docker for Mac](https://store.docker.com/editions/community/docker-ce-desktop-mac)をインストールする。（アカウント作成が必要かもしれない。）

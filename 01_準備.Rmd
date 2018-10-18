@@ -22,11 +22,13 @@ output: html_document
 "C:\Program Files\Oracle\VirtualBox\VBoxManage.exe" controlvm "default" natpf1 "jupyter,tcp,127.0.0.1,8888,,8888"
 ```
 
-Docker QuickStart Terminalの起動時に次のようなエラーメッセージが表示される場合は，UEFIの設定画面を開き（スタートボタンを右クリック→設定→更新とセキュリティ→回復→今すぐ再起動する→トラブルシューティング→UEFIファームウェアの設定→再起動），「Virtual Technology（Intelの場合）」や「Virtualization Technology（Intelの場合）」，「SVM（AMDの場合）」などを有効にする。UEFIの設定画面はPCの起動時に開くこともできるが，その方法は機種によって異なる（起動時にdelete・F1・Alt+F4などのキーを押し続ける）。
+Docker QuickStart Terminalの起動時に次のようなエラーメッセージが表示されることがある。
 
 ```
 Error with pre-create check: "This computer doesn't have VT-X/AMD-v enabled. Enabling it in the BIOS is mandatory"
 ```
+
+上のようなエラーメッセージが表示される場合は，UEFIの設定画面を開き（スタートボタンを右クリック→設定→更新とセキュリティ→回復→今すぐ再起動する→トラブルシューティング→UEFIファームウェアの設定→再起動），「Virtual Technology（Intelの場合）」や「Virtualization Technology（Intelの場合）」，「SVM（AMDの場合）」などを有効にする。UEFIの設定画面はPCの起動時に開くこともできるが，その方法は機種によって異なる（起動時にdelete・F1・Alt+F4などのキーを押し続ける）。
 
 #### macOSの場合
 1. [Docker for Mac](https://store.docker.com/editions/community/docker-ce-desktop-mac)をインストールする。（アカウント作成が必要かもしれない。）

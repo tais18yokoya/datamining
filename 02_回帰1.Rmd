@@ -180,6 +180,30 @@ my_test$residual <- my_test$dist - my_test$prediction
 sqrt(mean(my_test$residual^2))
 ```
 
+### 気になること
+
+1. 訓練データとテストデータへの分け方を変えると結果が変わる。（レポート課題）
+1. Kの値を変えると結果が変わる。（後で「パラメータチューニング」を学ぶ）
+
+#### 参考：過学習の極端な例
+
+```{r}
+#knnregはKNNのための関数（ここでは，trainと同じものだと思ってよい。）
+my_index <- c(5, 6, 10, 12, 20, 25, 31, 34, 40, 48)
+my_train2 <- my_data[my_index,]
+my_test2 <- my_data[-my_index,]
+my_model2 <- knnreg(formula = dist ~ speed, data = my_train2, k = 1)
+my_train_prediction2 <- predict(object = my_model2, newdata = my_train2)
+my_train_residual2 <- my_train2$dist - my_train_prediction2
+sqrt(mean(my_train_residual2^2))
+```
+
+```{r}
+my_test_prediction2 <- predict(object = my_model2, newdata = my_test2)
+my_test_residual2 <- my_test2$dist - my_test_prediction2
+sqrt(mean(my_test_residual2^2))
+```
+
 **レポート課題：「訓練データにおけるRMSEとテストデータにおけるRMSEを求める」という作業を10回繰り返し，両者の関係の散布図を描いてください。（散布図には点が10個あるはずです。）**
 
 ```{r, eval=FALSE}

@@ -1,0 +1,11 @@
+CompPrice,Income,Advertising,Population,Price,ShelveLoc,Age,Education,Urban,US
+138,73,11,276,120,Bad,42,17,Yes,Yes
+124,113,13,501,72,Bad,78,16,No,Yes
+141,63,0,168,135,Bad,44,12,Yes,Yes
+134,107,0,104,108,Medium,60,12,Yes,No
+96,94,14,384,120,Medium,36,18,No,Yes
+93,106,12,416,55,Medium,75,15,Yes,Yes
+130,28,6,410,133,Bad,72,16,Yes,Yes
+86,54,0,497,64,Bad,33,12,Yes,No
+147,40,0,277,144,Medium,73,10,Yes,No
+138,108,17,203,128,Good,33,14,Yes,Yes

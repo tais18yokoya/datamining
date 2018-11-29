@@ -2,4 +2,6 @@
 *.nb
 *.html
 *.bat
+my_train.csv
+my_test.csv
 

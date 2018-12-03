@@ -31,7 +31,7 @@ write_csv(my_train, 'my_train.csv')
 write_csv(my_test, 'my_test.csv')
 ```
 
-**復習**：線形単回帰分析を行う。（これと同じ結果をExcelで出せればよい。）
+**復習：** 線形単回帰分析を行う。（これと同じ結果をExcelで出せればよい。）
 
 ```{r}
 my_result <- train(form = dist ~ speed, data = my_train, method = "lm")

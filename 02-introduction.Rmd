@@ -1,10 +1,23 @@
-# 02 準備
+# 02 R入門
+
+## RStudio Cloud
+
+[RStudio Cloud](https://rstudio.cloud/)を使う。
+
+1. 「Sign Up」をクリックしてアカウントを作る。（サービスの連携が気にならなければ，Sign up with GoogleやSign up with GitHubでもよい。）
+1. 「Log in」をクリックしてログインする。
+1. 「New Project」をクリックしてプロジェクトを作る。
+1. プロジェクト名を「Untitled Project」から「data mining」に変える。（授業では，常にこのプロジェクトを使う。）
+
+**授業開始時にRStudio Cloudにログインしておくこと。**
 
 1. New File→R Markdown→Titleは「02」→OKをクリック
 1. [GitHub上で「Raw」をクリックした結果](https://raw.githubusercontent.com/taroyabuki/datamining/master/02.md)を貼り付ける。
 1. 保存する。
 
 メモをこのファイルに書き込みながら試す。以下を全部できれば終了。
+
+**練習：ブラウザのタブを閉じて，RStudio Cloudにログインし，「02.Rmd」を開いてみる。**
 
 ## よく使うパッケージ
 
@@ -148,10 +161,10 @@ scores
 ```{r}
 # 方法1
 people <- tribble(
-  ~名前, ~身長, ~体重,
-  "A",   160,   60,
-  "B",   170,   70,
-  "C",   189,   80
+  ~name, ~height, ~weight,
+  "A",   180,     60,
+  "B",   160,     70,
+  "C",   170,     80
 )
 people
 ```
@@ -159,9 +172,9 @@ people
 ```{r}
 # 方法2
 people <- data.frame(
-  名前 = c("A", "B", "C"),
-  身長 = c(160, 170, 180),
-  体重 = c(60, 70, 80))
+  name = c("A", "B", "C"),
+  height = c(180, 160, 170),
+  weight = c(60, 70, 80))
 people
 ```
 
@@ -172,28 +185,50 @@ people[2,]       # 1行（結果はデータフレーム）
 
 people[c(2, 3),] # 複数行（結果はデータフレーム）
 
-people$名前               # 1列（結果はベクトル！）
+people$name               # 1列（結果はベクトル！）
 
-people %>% select("名前") # 1列（結果はデータフレーム） 
+people %>% select("name") # 1列（結果はデータフレーム） 
 
-people[, c(1, 2)]                 # 複数列（その1）
+people[, c(1, 2)]                     # 複数列（その1）
 
-people %>% select("身長", "体重") # 複数列（その2）
+people %>% select("height", "weight") # 複数列（その2）
 ```
+
+絞り込み
+
+```{r}
+people %>% filter(name == "A")
+
+people %>% filter(height > 160 & weight > 70)   # 論理積（「かつ」）
+
+people %>% filter(height > 160 | weight > 70)   # 論理和（「または」）
+
+people %>% filter(height == max(people$height)) # 最大値
+```
+
+並べ替え
+
+```{r}
+people %>% arrange(height)
+
+people %>% arrange(-height)
+```
+
+**練習：体重が最も軽い人を表示する。**
 
 #### 更新（Update）
 
 ```{r}
-people$身長 = c(161, 171, 181) # 列の更新（その1）
-people$体重 = people$体重 + 1  # 列の更新（その2）
+people$height = c(161, 171, 181)  # 列の更新（その1）
+people$weight = people$weight + 1 # 列の更新（その2）
 people
 
-people$成績 = c(70, 80, 90)   # 列の追加
+people$score = c(70, 80, 90)   # 列の追加
 people
 ```
 
 ```{r}
-new_row <- data.frame(名前 = "D", 身長 = 190, 体重 = 90, 成績 = 100) # 新しい行
+new_row <- data.frame(name = "D", height = 190, weight = 90, score = 100) # 新しい行
 
 people %>% rbind(new_row)           # 行の追加（新しいデータフレームができる）
 people
@@ -211,7 +246,7 @@ people[-2,]       # 1行削除
 
 people[-c(2, 3),] # 複数行削除
 
-people[-(people$名前 == "B"), ] # 条件を満たす行の削除
+people[-(people$name == "B"), ] # 条件を満たす行の削除
 
 people[, -1] # 1列削除
 
@@ -219,38 +254,102 @@ people[, -c(1, 2)]    # 複数列削除（1列しか残らない場合，結果�
 
 people[, -c(1, 2, 3)] # 複数列削除（1列しか残らない場合，結果はベクトル！）
 
-people[, colnames(people) != "身長"]                 # 列名を指定して1列削除
+people[, colnames(people) != "height"]                   # 列名を指定して1列削除
 
-people[, !(colnames(people) %in% c("身長", "体重"))] # 列名を指定して複数列削除
+people[, !(colnames(people) %in% c("height", "weight"))] # 列名を指定して複数列削除
 ```
 
-**練習：`select`を使って最後の結果を得る。
+**練習：`select`を使って最後の結果を得る。**
 
 #### 基本統計量
 
 ```{r}
-mean(people$身長)       # 列ごとに計算
+mean(people$height)     # 列ごとに計算
+
 psych::describe(people) # まとめて計算
 ```
 
-## 関数（1変数）の描画
+グループごとの集計
+
+```{r}
+people <- tribble(
+  ~name, ~height, ~weight, ~score, ~class,
+  "A",   161,      61,      70,     "p",
+  "B",   171,      71,      80,     "q",
+  "C",   181,      81,      90,     "q",
+  "D",   190,      90,      100,    "q"
+)
+
+people %>% group_by(class) %>% summarize(avg_height = mean(height)) # グループごとの平均
+
+people %>% group_by(class) %>% filter(n() > 2) # 2件以上あるグループ
+```
+
+**練習：Rに入っているirisというデータのSepal.Lengthの全体の平均，Speciesごとの平均を求める。**
+
+```{r}
+psych::describe(iris)
+```
+
+# 可視化
+
+### データフレームの可視化
+
+```{r}
+people <- tribble(
+  ~name, ~height, ~weight, ~score, ~class,
+  "A",   161,      61,      70,     "p",
+  "B",   171,      71,      80,     "q",
+  "C",   181,      81,      90,     "q",
+  "D",   190,      90,      100,    "q"
+)
+```
+
+#### 基本
+
+```{r}
+plot(people[, c(2, 3)])
+```
+
+#### 応用
+
+```{r}
+ggplot(data = people,                           # 対象データ 
+       mapping = aes(x = height, y = weight)) + # x座標とy座標の指定
+  geom_point()                                  # 散布図
+```
+
+```{r}
+ggplot(data = people,                                          # 対象データ 
+       mapping = aes(x = height, y = weight, color = class)) + # classで色分け
+  geom_point()                                                 # 散布図
+```
+
+**練習：heightとscoreの関係を描く**
+
+**練習：Rに入っているirisというデータのSepal.Lengthをx座標，Sepal>widthをy座標として散布図を描く。Speciesごとに色を分けること。**
+
+### 関数（1変数）の描画
 
 ```{r}
 f <- function(x) { 2 * x + 3 }
 ```
 
+#### 基本
+
 ```{r}
-# その1
 plot(f, from = -3, to = 3)
 ```
 
+#### 応用
+
 ```{r}
-# その2
 my_data <- data.frame(X = seq(from = -3, to = 3, length.out = 10))
 my_data$Y <- f(my_data$X)
 head(my_data)
 ```
 
+```{r}
 ggplot(data = my_data,                # 対象データ 
        mapping = aes(x = X, y = Y)) + # x座標とy座標の指定
   geom_point()                        # 散布図
@@ -265,4 +364,4 @@ ggplot(data = my_data,                # 対象データ
 
 **練習：上のグラフの「点の描画」を止める。**
 
-**練習：** y = sin(x)（-5 <= x <= 5）のグラフを描く。**
+**練習：y = sin(x)（-5 <= x <= 5）のグラフを描く。**

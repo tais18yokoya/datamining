@@ -5,7 +5,7 @@
 ### インストール
 
 ```{r, eval=FALSE}
-# 一度だけ実行すればよい。
+# 一度だけ実行すればよい。（RStudioの警告に付随する「Install」を使ってもよい。）
 install.packages('tidyverse')
 install.packages('caret')
 install.packages('psych')
@@ -45,7 +45,7 @@ c          # 結果の表示
 部分文字列（その2）は略記法。この資料では，引数が一つの場合や，順番が重要でない場合のみ用いる。
 
 ```{r}
-s <- "abcde" # 'abc'でもよい。
+s <- "abcde" # 'abcde'でもよい。
 
 substr(x = s, start = 2, stop = 3) # 部分文字列（その1）
 substr(s, 2, 3)                    # 部分文字列（その2）

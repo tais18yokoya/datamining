@@ -1,29 +1,5 @@
 # 02 R入門
 
-## RStudio Cloud
-
-[RStudio Cloud](https://rstudio.cloud/)を使う。
-
-1. 「Sign Up」をクリックしてアカウントを作る。（サービスの連携が気にならなければ，Sign up with GoogleやSign up with GitHubでもよい。）
-1. 「Log in」をクリックしてログインする。
-1. 「New Project」をクリックしてプロジェクトを作る。
-1. プロジェクト名を「Untitled Project」から「data mining」に変える。（授業では，常にこのプロジェクトを使う。）
-
-**授業開始時にRStudio Cloudにログインしておくこと。**
-
-RStudioのコンソールで次を実行する。
-
-```{r}
-system('wget https://raw.githubusercontent.com/taroyabuki/datamining/master/02-introduction.Rmd')
-```
-
-02-introduction.Rmdというファイルができるから，クリックして開く。
-
-メモをこのファイルに書き込みながら試す。以下を全部できれば終了。
-カーソルのある行のコードは，Ctrl＋Enterで実行できる。
-
-**練習：ブラウザのタブを閉じて，RStudio Cloudにログインし，「02.Rmd」を開いてみる。**
-
 ## よく使うパッケージ
 
 ### インストール

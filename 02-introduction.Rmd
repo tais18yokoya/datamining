@@ -11,11 +11,16 @@
 
 **授業開始時にRStudio Cloudにログインしておくこと。**
 
-1. New File→R Markdown→Titleは「02」→OKをクリック
-1. [GitHub上で「Raw」をクリックした結果](https://raw.githubusercontent.com/taroyabuki/datamining/master/02.md)を貼り付ける。
-1. 保存する。
+RStudioのコンソールで次を実行する。
+
+```{r}
+system('wget https://raw.githubusercontent.com/taroyabuki/datamining/master/02-introduction.Rmd')
+```
+
+02-introduction.Rmdというファイルができるから，クリックして開く。
 
 メモをこのファイルに書き込みながら試す。以下を全部できれば終了。
+カーソルのある行のコードは，Ctrl＋Enterで実行できる。
 
 **練習：ブラウザのタブを閉じて，RStudio Cloudにログインし，「02.Rmd」を開いてみる。**
 

@@ -14,13 +14,15 @@
 
 **授業開始時にRStudio Cloudにログインしておくこと。**
 
-番号|タイトル|ファイル
+番号|見やすい表示|ファイル
 ---|---|---
 1|イントロダクション|
-2|[R入門](02-introduction.Rmd)|02-introduction.Rmd
-3|[単回帰](03-regression.Rmd)|03-regression.Rmd
+2|[R入門](md/02-introduction.md)|02-introduction.Rmd
+3|[単回帰](md/03-regression.md)|03-regression.Rmd
 
-2を学ぶ場合，RStudioのコンソールで次を実行する。
+ファイルの使い方：
+
+たとえば2を学ぶ場合，RStudioのコンソールで次を実行する。
 
 ```{r}
 system('wget https://raw.githubusercontent.com/taroyabuki/datamining/master/02-introduction.Rmd')

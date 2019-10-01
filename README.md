@@ -22,7 +22,7 @@
 
 ファイルの使い方：
 
-たとえば2を学ぶ場合，RStudioのコンソールで次を実行する。
+たとえば2を学ぶ場合，RStudioのコンソールで次を実行する**（最後がファイル名）**。
 
 ```{r}
 system('wget https://raw.githubusercontent.com/taroyabuki/datamining/master/02-introduction.Rmd')

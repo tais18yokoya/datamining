@@ -331,7 +331,7 @@ ggplot(data = people,                                          # 対象データ
 
 **練習：heightとscoreの関係を描く**
 
-**練習：Rに入っているirisというデータのSepal.Lengthをx座標，Sepal>widthをy座標として散布図を描く。Speciesごとに色を分けること。**
+**練習：Rに入っているirisというデータのSepal.Lengthをx座標，Sepal.widthをy座標として散布図を描く。Speciesごとに色を分けること。**
 
 ### 関数（1変数）の描画
 

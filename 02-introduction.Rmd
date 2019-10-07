@@ -210,48 +210,36 @@ people # データが更新されるわけではない。
 
 #### 更新（Update）
 
-##### 方針1（新しいデータフレームの生成）
-
-```{r}
-# 行の操作
-tmp <- data.frame(name = "D", height = 190, weight = 90) # 新しい行
-people %>% rbind(tmp)                                    # 行の追加
-```
-
-```{r}
-# 列の操作
-tmp <- c(70, 80, 90)           # 新しい列
-people %>% mutate(socre = tmp) # 列の追加
-```
-
-##### 方針2 （既存のデータフレームの更新）
+##### 既存の行・列の更新
 
 ```{r}
 # 行の更新
 tmp <- data.frame(name = "A", height = 179, weight = 59) # 新しい行
-people[1,] <- tmp                                        # 行の更新
-people
-```
-
-```{r}
-# 行の追加
-tmp <- data.frame(name = "D", height = 190, weight = 90) # 新しい行
-people <- people %>% rbind(tmp)                          # 行の追加
+people[1,] <- tmp                                        # 行の更新（実は追加も可）
 people
 ```
 
 ```{r}
 # 列の更新
-tmp <- c(161, 171, 181, 191) # 新しい列
-people$height = tmp     # 列の更新
+tmp <- c(161, 171, 181) # 新しい列
+people$height = tmp     # 列の更新（実は追加も可）
 people
 ```
 
+##### 新しい行・列の追加
+
 ```{r}
-# 列の追加
-tmp <- c(70, 80, 90, 100) # 新しい列
-people$score = tmp   # 列の追加
-people
+# 行の追加（新しいデータフレーム）
+tmp <- data.frame(name = "D", height = 190, weight = 90) # 新しい行
+people %>% rbind(tmp)                                    # 行の追加
+# もとのデータフレームを更新する場合は，頭に「people <- 」を付ける。
+```
+
+```{r}
+# 列の追加（新しいデータフレーム）
+tmp <- c(70, 80, 90)           # 新しい列
+people %>% mutate(socre = tmp) # 列の追加
+# もとのデータフレームを更新する場合は，頭に「people <- 」を付ける。
 ```
 
 #### 削除（Delete）

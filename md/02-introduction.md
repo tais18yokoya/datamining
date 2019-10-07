@@ -143,6 +143,12 @@ scores
 #### 生成（Create）
 
 ```r
+# 毎回実行する
+library(tidyverse)
+library(caret)
+```
+
+```r
 # 方法1
 people <- tribble(
   ~name, ~height, ~weight,
@@ -178,7 +184,7 @@ people[, c(1, 2)]                     # 複数列（その1）
 people %>% select("height", "weight") # 複数列（その2）
 ```
 
-絞り込み
+##### 検索（絞り込み）
 
 ```r
 people %>% filter(name == "A")
@@ -190,42 +196,68 @@ people %>% filter(height > 160 | weight > 70)   # 論理和（「または」）
 people %>% filter(height == max(people$height)) # 最大値
 ```
 
-並べ替え
+##### 並べ替え
 
 ```r
 people %>% arrange(height)
 
 people %>% arrange(-height)
+
+people # データが更新されるわけではない。
 ```
 
 **練習：体重が最も軽い人を表示する。**
 
 #### 更新（Update）
 
-```r
-people$height = c(161, 171, 181)  # 列の更新（その1）
-people$weight = people$weight + 1 # 列の更新（その2）
-people
+##### 方針1（新しいデータフレームの生成）
 
-people$score = c(70, 80, 90)   # 列の追加
+```r
+# 行の操作
+tmp <- data.frame(name = "D", height = 190, weight = 90) # 新しい行
+people %>% rbind(tmp)                                    # 行の追加
+```
+
+```r
+# 列の操作
+tmp <- c(70, 80, 90)           # 新しい列
+people %>% mutate(socre = tmp) # 列の追加
+```
+
+##### 方針2 （既存のデータフレームの更新）
+
+```r
+# 行の更新
+tmp <- data.frame(name = "A", height = 179, weight = 59) # 新しい行
+people[1,] <- tmp                                        # 行の更新
 people
 ```
 
 ```r
-new_row <- data.frame(name = "D", height = 190, weight = 90, score = 100) # 新しい行
-
-people %>% rbind(new_row)           # 行の追加（新しいデータフレームができる）
+# 行の追加
+tmp <- data.frame(name = "D", height = 190, weight = 90) # 新しい行
+people <- people %>% rbind(tmp)                          # 行の追加
 people
+```
 
-people <- people %>% rbind(new_row) # 行の追加（既存のデータフレームの更新）
+```r
+# 列の更新
+tmp <- c(161, 171, 181, 191) # 新しい列
+people$height = tmp     # 列の更新
+people
+```
+
+```r
+# 列の追加
+tmp <- c(70, 80, 90, 100) # 新しい列
+people$score = tmp   # 列の追加
 people
 ```
 
 #### 削除（Delete）
 
-いずれも，新しいデータフレームができる。
-
 ```r
+# いずれも，新しいデータフレームができる。
 people[-2,]       # 1行削除
 
 people[-c(2, 3),] # 複数行削除

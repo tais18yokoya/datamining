@@ -5,7 +5,7 @@
 ### インストール
 
 ```r
-# 一度だけ実行すればよい。（RStudioの警告に付随する「Install」を使ってもよい。）
+# 一度だけ実行する。（RStudioの警告に付随する「Install」を使ってもよい。）
 install.packages('tidyverse')
 install.packages('caret')
 install.packages('psych')
@@ -24,6 +24,7 @@ library(caret)
 ### 数値
 
 ```r
+# この資料では，見やすさのために「->」，「+」，「=」などの前後，「,」の後に空白を入れる。
 a <- 2
 b <- 3
 a + b # 計算
@@ -54,7 +55,7 @@ s %>% substr(start = 2, stop = 3)  # 部分文字列（その3）
 
 ```r
 t <- "fgh"
-paste(s, t, sep = ':') # 文字列の連結
+paste(s, t, sep = ',') # 文字列の連結
 ```
 
 ### ベクトル
@@ -83,6 +84,7 @@ vec1 * 10 # ベクトルに数を掛ける。
 vec1 <- c(1,  1,   2,    3,     5)
 vec2 <- c(1, 10, 100, 1000, 10000)
 vec1 + vec2 # ベクトル同士の足し算。
+# この資料では，見やすさのために余分な空白を入れて水平方向の位置を揃えることがある。
 ```
 
 ```r
@@ -97,9 +99,8 @@ vec1 %*% vec2 # ベクトルの内積
 
 ```r
 1:10
+# Pythonのrange(1, 10)の結果は1以上9以下の整数だった。
 ```
-
-（Pythonのrange(1, 10)の結果は1以上9以下の整数だった。）
 
 ```r
 seq(from = 0, to = 1, by = 0.1)
@@ -138,15 +139,15 @@ scores <- factor(c("グー","チョキ","パー","チョキ"))
 scores
 ```
 
-### データフレーム
-
-#### 生成（Create）
+## データフレーム
 
 ```r
 # 毎回実行する
 library(tidyverse)
 library(caret)
 ```
+
+### 生成（Create）
 
 ```r
 # 方法1
@@ -162,29 +163,45 @@ people
 ```r
 # 方法2
 people <- data.frame(
-  name = c("A", "B", "C"),
+  name   = c("A", "B", "C"),
   height = c(180, 160, 170),
-  weight = c(60, 70, 80))
+  weight = c(60, 70, 80),
+  stringsAsFactors = FALSE) # 文字列を因子にしないためのオプション
 people
 ```
 
-#### 読み込み（Read）
+#### 新しい行・列の追加
 
 ```r
-people[2,]       # 1行（結果はデータフレーム）
+# 行の追加
+tmp <- data.frame(name = "D", height = 190, weight = 90) # 新しい行
+people %>% rbind(tmp)                                    # 行の追加
 
-people[c(2, 3),] # 複数行（結果はデータフレーム）
-
-people$name               # 1列（結果はベクトル！）
-
-people %>% select("name") # 1列（結果はデータフレーム）
-
-people[, c(1, 2)]                     # 複数列（その1）
-
-people %>% select("height", "weight") # 複数列（その2）
+# 列の追加
+tmp <- c("P", "Q", "R")        # 新しい列
+people %>% mutate(name2 = tmp) # 列の追加（cbindではダメ）
+# もとのデータフレームを更新する場合は，頭に「people <- 」を付ける。
 ```
 
-##### 検索（絞り込み）
+### 読み込み（Read）
+
+```r
+head(people) # 最初の数件
+
+people[2, 3] # 2行3列
+
+people[2, ]       # 1行
+people[c(2, 3), ] # 複数行
+
+people$name       # 1列（結果はベクトル）
+people[, 2]       # 1列（結果はベクトル）
+people[, c(2, 3)] # 複数列
+
+people %>% select("name")             # 1列
+people %>% select("height", "weight") # 複数列
+```
+
+#### 検索（絞り込み）
 
 ```r
 people %>% filter(name == "A")
@@ -196,7 +213,7 @@ people %>% filter(height > 160 | weight > 70)   # 論理和（「または」）
 people %>% filter(height == max(people$height)) # 最大値
 ```
 
-##### 並べ替え
+#### 並べ替え
 
 ```r
 people %>% arrange(height)
@@ -208,9 +225,7 @@ people # データが更新されるわけではない。
 
 **練習：体重が最も軽い人を表示する。**
 
-#### 更新（Update）
-
-##### 既存の行・列の更新
+### 更新（Update）
 
 ```r
 # 行の更新
@@ -226,46 +241,25 @@ people$height = tmp     # 列の更新（実は追加も可）
 people
 ```
 
-##### 新しい行・列の追加
-
-```r
-# 行の追加（新しいデータフレーム）
-tmp <- data.frame(name = "D", height = 190, weight = 90) # 新しい行
-people %>% rbind(tmp)                                    # 行の追加
-# もとのデータフレームを更新する場合は，頭に「people <- 」を付ける。
-```
-
-```r
-# 列の追加（新しいデータフレーム）
-tmp <- c(70, 80, 90)           # 新しい列
-people %>% mutate(socre = tmp) # 列の追加
-# もとのデータフレームを更新する場合は，頭に「people <- 」を付ける。
-```
-
-#### 削除（Delete）
+### 削除（Delete）
 
 ```r
 # いずれも，新しいデータフレームができる。
 people[-2,]       # 1行削除
-
 people[-c(2, 3),] # 複数行削除
 
 people[-(people$name == "B"), ] # 条件を満たす行の削除
 
-people[, -1] # 1列削除
-
-people[, -c(1, 2)]    # 複数列削除（1列しか残らない場合，結果はデータフレーム）
-
-people[, -c(1, 2, 3)] # 複数列削除（1列しか残らない場合，結果はベクトル！）
+people[, -1]          # 1列削除
+people[, -c(1, 2)]    # 複数列削除（1列しか残らない場合，結果はベクトル）
 
 people[, colnames(people) != "height"]                   # 列名を指定して1列削除
-
 people[, !(colnames(people) %in% c("height", "weight"))] # 列名を指定して複数列削除
 ```
 
-**練習：`select`を使って最後の結果を得る。**
+**練習：`select`を使って`people[, colnames(people) != "height"]`と同じ結果を得る。**
 
-#### 基本統計量
+### 基本統計量
 
 ```r
 mean(people$height)     # 列ごとに計算
@@ -273,7 +267,9 @@ mean(people$height)     # 列ごとに計算
 psych::describe(people) # まとめて計算
 ```
 
-グループごとの集計
+**練習：heightの標準偏差を求める。**
+
+#### グループごとの集計
 
 ```r
 people <- tribble(
@@ -295,7 +291,7 @@ people %>% group_by(class) %>% filter(n() > 2) # 2件以上あるグループ
 psych::describe(iris)
 ```
 
-# 可視化
+## 可視化
 
 ### データフレームの可視化
 

@@ -169,9 +169,13 @@ people <- data.frame(
   weight = c( 60,  90,  70,  90, 100),
   score  = c( 70,  80,  90, 100,  60),
   class  = c("p", "q", "p", "q", "p"),
-  stringsAsFactors = FALSE # 文字列を因子にしないためのオプション
-)
+  stringsAsFactors = FALSE) # 文字列を因子にしないためのオプション
 people
+```
+
+```{r}
+# 補足（classを因子にしたい場合）
+people$class <- as.factor(people$class)
 ```
 
 #### 新しい行・列の追加

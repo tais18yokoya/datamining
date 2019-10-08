@@ -152,21 +152,25 @@ library(caret)
 ```{r}
 # 方法1
 people <- tribble(
-  ~name, ~height, ~weight,
-  "A",   180,     60,
-  "B",   160,     70,
-  "C",   170,     80
-)
+  ~name, ~height, ~weight, ~score, ~class,
+  "A",       160,      60,     70, "p",
+  "B",       170,      90,     80, "q",
+  "C",       180,      70,     90, "p",
+  "D",       190,      90,    100, "q",
+  "E",       200,     100,     60, "p")
 people
 ```
 
 ```{r}
 # 方法2
 people <- data.frame(
-  name   = c("A", "B", "C"),
-  height = c(180, 160, 170),
-  weight = c(60, 70, 80),
-  stringsAsFactors = FALSE) # 文字列を因子にしないためのオプション
+  name   = c("A", "B", "C", "D", "E"),
+  height = c(160, 170, 180, 190, 200),
+  weight = c( 60,  90,  70,  90, 100),
+  score  = c( 70,  80,  90, 100,  60),
+  class  = c("p", "q", "p", "q", "p"),
+  stringsAsFactors = FALSE # 文字列を因子にしないためのオプション
+)
 people
 ```
 
@@ -174,12 +178,14 @@ people
 
 ```{r}
 # 行の追加
-tmp <- data.frame(name = "D", height = 190, weight = 90) # 新しい行
-people %>% rbind(tmp)                                    # 行の追加
+tmp <- data.frame(name = "F", height = 172, weight = 60,
+                  score = "50", class = "p",
+                  stringsAsFactors = FALSE) # 新しい行
+people %>% rbind(tmp)                       # 行の追加
 
 # 列の追加
-tmp <- c("P", "Q", "R")        # 新しい列
-people %>% mutate(name2 = tmp) # 列の追加（cbindではダメ）
+tmp <- c("P", "Q", "R", "S", "T") # 新しい列
+people %>% mutate(name2 = tmp)    # 列の追加
 # もとのデータフレームを更新する場合は，頭に「people <- 」を付ける。
 ```
 
@@ -216,9 +222,9 @@ people %>% filter(height == max(people$height)) # 最大値
 #### 並べ替え
 
 ```{r}
-people %>% arrange(height)
+people %>% arrange(score)
 
-people %>% arrange(-height)
+people %>% arrange(-score)
 
 people # データが更新されるわけではない。
 ```
@@ -229,15 +235,17 @@ people # データが更新されるわけではない。
 
 ```{r}
 # 行の更新
-tmp <- data.frame(name = "A", height = 179, weight = 59) # 新しい行
-people[1,] <- tmp                                        # 行の更新（実は追加も可）
+tmp <- data.frame(name = "A", height = 161, weight = 61,
+                  score = 70, class = "p",
+                  stringsAsFactors = FALSE) # 新しい行
+people[1,] <- tmp                           # 行の更新（この記法で追加も可）
 people
 ```
 
 ```{r}
 # 列の更新
-tmp <- c(161, 171, 181) # 新しい列
-people$height = tmp     # 列の更新（実は追加も可）
+tmp <- c(161, 171, 181, 191,201) # 新しい列
+people$height = tmp              # 列の更新（実は追加も可）
 people
 ```
 
@@ -274,35 +282,47 @@ psych::describe(people) # まとめて計算
 ```{r}
 people <- tribble(
   ~name, ~height, ~weight, ~score, ~class,
-  "A",   161,      61,      70,     "p",
-  "B",   171,      71,      80,     "q",
-  "C",   181,      81,      90,     "q",
-  "D",   190,      90,      100,    "q"
-)
+  "A",       160,      60,     70, "p",
+  "B",       170,      90,     80, "q",
+  "C",       180,      70,     90, "p",
+  "D",       190,      90,    100, "q",
+  "E",       200,     100,     60, "p")
 
 people %>% group_by(class) %>% summarize(avg_height = mean(height)) # グループごとの平均
 
 people %>% group_by(class) %>% filter(n() > 2) # 2件以上あるグループ
 ```
 
-**練習：Rに入っているirisというデータのSepal.Lengthの全体の平均，Speciesごとの平均を求める。**
-
-```{r}
-psych::describe(iris)
-```
+**練習：Rに入っているirisというデータのSepal.Lengthの全体の平均，Speciesごとの平均を求める。ヒント：最初にデータを`View(iris）`で確認する。**
 
 ## 可視化
+
+```{r}
+# 毎回実行する
+library(tidyverse)
+library(caret)
+```
+
+### 1次元データの可視化
+
+```{r}
+tmp <- c(7, 5, 4, 0, 6, 1, 3, 9, 0, 5, 5, 0, 6, 9, 5, 3, 7, 10, 8, 7)
+
+plot(tmp, type = "l") # 折れ線（時系列）
+
+hist(tmp)             # ヒストグラム
+```
 
 ### データフレームの可視化
 
 ```{r}
 people <- tribble(
   ~name, ~height, ~weight, ~score, ~class,
-  "A",   161,      61,      70,     "p",
-  "B",   171,      71,      80,     "q",
-  "C",   181,      81,      90,     "q",
-  "D",   190,      90,      100,    "q"
-)
+  "A",       160,      60,     70, "p",
+  "B",       170,      90,     80, "q",
+  "C",       180,      70,     90, "p",
+  "D",       190,      90,    100, "q",
+  "E",       200,     100,     60, "p")
 ```
 
 #### 基本

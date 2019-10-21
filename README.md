@@ -30,5 +30,9 @@ system("wget https://raw.githubusercontent.com/taroyabuki/datamining/master/02-i
 
 02-introduction.Rmdというファイルができるから，クリックして開く。
 
+```r
+system("wget https://raw.githubusercontent.com/taroyabuki/datamining/master/03-regression.Rmd")
+```
+
 メモをこのファイルに書き込みながら試す。以下を全部できれば終了。
 カーソルのある行のコードは，Ctrl＋Enterで実行できる。

@@ -1,0 +1,41 @@
+---
+title: "データ解析入門 レポート1"
+author: "1234567 工大太郎"
+output: html_document
+---
+
+**課題：carsのデータをK最近傍法で予測する際の，最良のKの値を調べために，次のようなコードを実行する．**
+
+1. 学生番号と名前を自分のもので置き換える．
+1. このコードの，空行以外のすべての行に，コメントを付ける．
+1. このコードを理解するのに必要なことをすべて説明する（1000字程度）．ヒント：K最近傍法とは何か，Kの値は何を意味するか，Kの値による予測性能の違いをどうやって比較するか
+1. RStudioの「Knit」ボタンを押すとreport1.htmlができる．それをブラウザで開いて，問題がないことを確認する．
+1. report1.Rmdをローカルにダウンロードし，名前を1234567-1.Rmdに変更（1234567の部分は自分の学生番号で置き換える），指定されたフォームで提出する．
+
+```{r, results=FALSE, warning=FALSE, message=FALSE}
+library(tidyverse) # コメント不要
+library(caret)     # コメント不要
+```
+
+```{r}
+set.seed(0)
+my_data <- cars
+
+my_result <- train(form = dist ~ speed,
+                   data = my_data,
+                   method = "knn",
+                   tuneGrid = expand.grid(k = c(1:15)),
+                   trControl = trainControl(method = "repeatedcv",
+                                            number = 5,
+                                            repeats = 10))
+
+my_result$results
+```
+
+```{r}
+plot(my_result)
+```
+
+```{r}
+my_result$results %>% filter(RMSE == min(my_result$results$RMSE))
+```

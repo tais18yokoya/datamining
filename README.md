@@ -54,3 +54,5 @@ system("wget https://raw.githubusercontent.com/taroyabuki/datamining/master/repo
 ```
 
 提出先：https://docs.google.com/forms/d/e/1FAIpQLSdryfqTuzbxoy3PV-_7r5Q_47gOtxB3OOLtNfnPLxSKZTCGUA/viewform
+
+締切：12月2日（月）13:00

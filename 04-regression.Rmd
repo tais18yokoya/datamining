@@ -236,8 +236,8 @@ ggplot(data = my_result$results,                    # 検証RMSEの図示
 ```{r,cache=TRUE, warning=FALSE, message=FALSE}
 library(tidyverse)
 library(caret)
-my_train <- read_csv("train.csv")
-my_test  <- read_csv("test.csv")
+my_train <- read_csv("data/house-prices-advanced-regression-techniques/train.csv")
+my_test  <- read_csv("data/house-prices-advanced-regression-techniques/test.csv")
 ```
 
 ```{r,cache=TRUE, warning=FALSE, message=FALSE}

@@ -19,20 +19,40 @@
 1|イントロダクション|
 2|[R入門](md/02-introduction.md)|02-introduction.Rmd
 3|[単回帰](md/03-regression.md)|03-regression.Rmd
+4|[重回帰](md/04-regression.md)|04-regression.Rmd
 
 ファイルの使い方：
 
-たとえば2を学ぶ場合，RStudioのコンソールで次を実行する（最後がファイル名）。
-
 ```r
+# 2「R入門」
 system("wget https://raw.githubusercontent.com/taroyabuki/datamining/master/02-introduction.Rmd")
+# 02-introduction.Rmdというファイルができるから，クリックして開く。
+# メモをこのファイルに書き込みながら試す。以下を全部できれば終了。
+# カーソルのある行のコードは，Ctrl＋Enterで実行できる。
 ```
 
-02-introduction.Rmdというファイルができるから，クリックして開く。
-
 ```r
+# 3「単回帰」
 system("wget https://raw.githubusercontent.com/taroyabuki/datamining/master/03-regression.Rmd")
 ```
 
-メモをこのファイルに書き込みながら試す。以下を全部できれば終了。
-カーソルのある行のコードは，Ctrl＋Enterで実行できる。
+```r
+# 4「重回帰」
+system("wget https://raw.githubusercontent.com/taroyabuki/datamining/master/04-regression.Rmd")
+system("mkdir -p data/")
+
+```
+
+## レポート
+
+## 1回目
+
+```r
+# テンプレート
+system("wget https://raw.githubusercontent.com/taroyabuki/datamining/master/report1.Rmd")
+system("mkdir -p data/house-prices-advanced-regression-techniques")
+system("wget -P data/house-prices-advanced-regression-techniques https://raw.githubusercontent.com/taroyabuki/datamining/master/data/house-prices-advanced-regression-techniques/train.csv")
+system("wget -P data/house-prices-advanced-regression-techniques https://raw.githubusercontent.com/taroyabuki/datamining/master/data/house-prices-advanced-regression-techniques/test.csv")
+```
+
+提出先：https://docs.google.com/forms/d/e/1FAIpQLSdryfqTuzbxoy3PV-_7r5Q_47gOtxB3OOLtNfnPLxSKZTCGUA/viewform

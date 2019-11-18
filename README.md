@@ -39,8 +39,9 @@ system("wget https://raw.githubusercontent.com/taroyabuki/datamining/master/03-r
 ```r
 # 4「重回帰」
 system("wget https://raw.githubusercontent.com/taroyabuki/datamining/master/04-regression.Rmd")
-system("mkdir -p data/")
-
+system("mkdir -p data/house-prices-advanced-regression-techniques")
+system("wget -P data/house-prices-advanced-regression-techniques https://raw.githubusercontent.com/taroyabuki/datamining/master/data/house-prices-advanced-regression-techniques/train.csv")
+system("wget -P data/house-prices-advanced-regression-techniques https://raw.githubusercontent.com/taroyabuki/datamining/master/data/house-prices-advanced-regression-techniques/test.csv")
 ```
 
 ## レポート
@@ -50,9 +51,6 @@ system("mkdir -p data/")
 ```r
 # テンプレート
 system("wget https://raw.githubusercontent.com/taroyabuki/datamining/master/report1.Rmd")
-system("mkdir -p data/house-prices-advanced-regression-techniques")
-system("wget -P data/house-prices-advanced-regression-techniques https://raw.githubusercontent.com/taroyabuki/datamining/master/data/house-prices-advanced-regression-techniques/train.csv")
-system("wget -P data/house-prices-advanced-regression-techniques https://raw.githubusercontent.com/taroyabuki/datamining/master/data/house-prices-advanced-regression-techniques/test.csv")
 ```
 
 提出先：https://docs.google.com/forms/d/e/1FAIpQLSdryfqTuzbxoy3PV-_7r5Q_47gOtxB3OOLtNfnPLxSKZTCGUA/viewform

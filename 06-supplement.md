@@ -9,7 +9,7 @@
 |無|有|晴れ|出る|
 
 1. 上のデータをExcelで作り，CSV形式（student-life.csv）で保存する．（テキストエディタでCSVファイルを作ってもよい．）
-1. RStudio Cloudにアップロードする．（右下のファイルタブのUploadボタンを押す。）
+1. RStudio Cloudにアップロードする．（右下のFilesタブのUploadボタンを押す。）
 1. RStudio Cloudで新しい「R Script」を作り，以下のコードを貼り付け，実行して結果を確認する．
 
 データを作るときは，後で問題が起きないように，ASCII文字だけを使う．（例：有→T，無→F，雨→rainy，晴れ→sunny，出ない→F，出る→T．ラベルはexperiment，weather，lecture，goout，など）

@@ -8,8 +8,10 @@
 |無|有|雨|出ない|
 |無|有|晴れ|出る|
 
-このデータをExcelで作り，CSV形式（student-life.csv）で保存，RStudio Cloudにアップロードする．
-その際，問題が起きないように，ASCII文字だけを使う．（例：有→T，無→F，雨→rainy，晴れ→sunny，出ない→F，出る→T．ラベルはexperiment，weather，lecture，goout，など）
+1. 上のデータをExcelで作り，CSV形式（student-life.csv）で保存する．（テキストエディタでCSVファイルを作ってもよい．）
+1. RStudio Cloudにアップロードする．（右下のファイルタブのUploadボタンを押す。）
+
+データを作るときは，後で問題が起きないように，ASCII文字だけを使う．（例：有→T，無→F，雨→rainy，晴れ→sunny，出ない→F，出る→T．ラベルはexperiment，weather，lecture，goout，など）
 
 ```r
 install.packages(c("RWeka", "e1071", "partykit", "rpart.plot"))
@@ -18,7 +20,7 @@ install.packages(c("RWeka", "e1071", "partykit", "rpart.plot"))
 ```r
 library(tidyverse)
 library(caret)
-my_data <- read_csv(ファイル名)
+my_data <- read_csv("student-life.csv")
 my_data
 ```
 

@@ -21,6 +21,8 @@
 3|[単回帰](md/03-regression.md)|03-regression.Rmd
 4|[重回帰](md/04-regression.md)|04-regression.Rmd
 5|[分類（多値）](md/05-classification.md)|05-classification.Rmd
+6|[分類（2値）の準備](06-supplement.md)|
+7|[分類（2値）](md/07-classification.md)|07-classification.Rmd
 
 ファイルの使い方：
 
@@ -49,6 +51,12 @@ system("wget -P data/house-prices-advanced-regression-techniques https://raw.git
 # 5「分類（多値）」
 system("wget https://raw.githubusercontent.com/taroyabuki/datamining/master/05-classification.Rmd")
 ```
+
+```r
+# 7「分類（2値）」
+system("wget https://raw.githubusercontent.com/taroyabuki/datamining/master/07-classification.Rmd")
+```
+
 
 ## レポート
 

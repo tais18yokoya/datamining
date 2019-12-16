@@ -1,0 +1,197 @@
+
+# 分類2（2値分類）
+
+## 陽性と陰性
+
+キーワード：陽性，陰性
+
+## 2値分類の性能指標
+
+```{r,cache=TRUE, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(caret)
+
+my_data <- data.frame(
+  answer = factor(c(  0,   1,   1,   0,   1,   0,    1,   0,   0,   1)), # 正解
+  prob =          c(0.7, 0.8, 0.3, 0.4, 0.9, 0.6, 0.99, 0.1, 0.2, 0.5))  # 陽性確率
+```
+
+```{r,cache=TRUE, warning=FALSE, message=FALSE}
+my_data$pred <- ifelse(my_data$prob >= 0.5, 1, 0) %>% # 0.5以上を陽性とする．
+  as.factor                                           # 因子に変換する．
+```
+
+```{r,cache=TRUE, warning=FALSE, message=FALSE}
+confusionMatrix(data = my_data$pred,        # 予測
+                reference = my_data$answer, # 正解
+                positive = "1",             # 陽性
+                mode = "everything")        # すべての指標を求める．
+```
+
+キーワード：正解率，精度，再現率
+
+## ROC曲線
+
+キーワード：ROC曲線
+
+```{r,cache=TRUE, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(caret)
+
+my_data <- data.frame(
+  answer = factor(c(  0,   1,   1,   0,   1,   0,    1,   0,   0,   1)),
+  prob =          c(0.7, 0.8, 0.3, 0.4, 0.9, 0.6, 0.99, 0.1, 0.2, 0.5))
+
+library(ROCR)
+my_pred <- prediction(predictions = my_data$prob, labels = my_data$answer)
+my_roc <- my_pred %>% performance(measure = "tpr", x.measure = "fpr")
+plot(my_roc) # ROC曲線を描く．
+```
+
+## タイタニックその1
+
+キーワード：タイタニック
+
+```{r,cache=TRUE, warning=FALSE, message=FALSE}
+# 説明のためのコード（現時点での理解は不要）
+library(tidyverse)
+library(caret)
+
+my_data <- epitools::expand.table(Titanic)
+head(my_data)
+```
+
+```{r,cache=TRUE, warning=FALSE, message=FALSE}
+summary(my_data)
+```
+
+**練習：Survived（生死）をClassごとに集計してください．結果は次のようになるはずです．**
+
+## ダミー変数の導入
+
+キーワード：ダミー変数
+
+キーワード：One-Hot表現
+
+```{r,cache=TRUE, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(caret)
+my_data <- epitools::expand.table(Titanic)            # タイタニックのデータ
+
+dummyVars(formula = Survived ~ ., data = my_data) %>% # ダミー変数の導入準備
+  predict(my_data) %>%                                # ダミー変数の導入
+  head                                                # 先頭のみ表示
+```
+
+```{r,cache=TRUE, warning=FALSE, message=FALSE}
+dummyVars(formula = Survived ~ ., data = my_data, # ダミー変数の導入準備
+          fullRank = TRUE) %>%                    # 冗長な変数の削除
+  predict(my_data) %>%                            # ダミー変数の導入
+  head                                            # 先頭のみ表示
+```
+
+```{r,cache=TRUE, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(caret)
+my_data <- epitools::expand.table(Titanic)
+
+my_result <- train(form = Survived ~ .,data = my_data,  method = "nnet", # 訓練
+                   preProcess = c("center", "scale"))                    # 標準化
+my_result$results %>% filter(Accuracy == max(Accuracy))                  # 正解率が最大のもの
+```
+
+## ロジスティック回帰
+
+キーワード：ロジスティック回帰
+
+キーワード：標準ロジスティック関数
+
+```{r,cache=TRUE, warning=FALSE, message=FALSE}
+f <- function(x) {1 / (1 + exp(-x))}
+plot(f, -6, 6)
+```
+
+```{r,cache=TRUE, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(caret)
+my_data <- epitools::expand.table(Titanic)                              # タイタニックのデータ
+
+my_result <- train(form = Survived ~ .,data = my_data,  method = "glm") # 訓練
+my_result$finalModel$coefficients                                       # 係数
+```
+
+```{r,cache=TRUE, warning=FALSE, message=FALSE}
+my_result$finalModel$coefficients
+```
+
+## タイタニック（その2）
+
+キーワード：欠損
+
+```{r,cache=TRUE, warning=FALSE, message=FALSE}
+install.packages("titanic")
+
+my_train <- titanic::titanic_train # 訓練のデータ
+my_test  <- titanic::titanic_test  # テストデータ
+```
+
+```{r,cache=TRUE, warning=FALSE, message=FALSE}
+my_train$Survived <- as.factor(my_train$Survived) # Survivedを因子にする．
+```
+
+```{r,cache=TRUE, warning=FALSE, message=FALSE}
+psych::describe(my_train)
+```
+
+```{r,cache=TRUE, warning=FALSE, message=FALSE}
+psych::describe(my_test)
+```
+
+```{r,cache=TRUE, warning=FALSE, message=FALSE}
+my_data <- my_train[, -c(1, 4, 9, 11)] # PassengerId，Name，Ticket，Cabinを除外する．
+```
+
+## 欠損の扱い
+
+```{r,cache=TRUE, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(caret)
+my_train <- titanic::titanic_train
+my_test  <- titanic::titanic_test
+my_train$Survived <- as.factor(my_train$Survived)
+my_data <- my_train[, -c(1, 4, 9, 11)]
+```
+
+```{r,cache=TRUE, warning=FALSE, message=FALSE}
+my_result <- train(form = Survived ~ .,
+                   data = my_data,
+                   method = "xgbTree",  # ブースティング（欠損があっても使える）
+                   na.action = na.pass) # 欠損があっても止めない．
+my_result$results %>% filter(Accuracy == max(Accuracy)) # 正解率の最大値
+```
+
+```{r,cache=TRUE, warning=FALSE, message=FALSE}
+my_result <- train(form = Survived ~ .,
+                   data = my_data,
+                   method = "rf",               # ランダムフォレスト（欠損があると使えない）
+                   na.action = na.pass,         # 欠損があっても止めない．
+                   preProcess = c("knnImpute")) # 欠損値をk最近傍法による予測値で代替する．
+my_result$results %>% filter(Accuracy == max(Accuracy)) # 正解率の最大値
+#
+```
+
+```{r,cache=TRUE, warning=FALSE, message=FALSE}
+my_pred <- my_result %>% predict(my_test, na.action = na.pass) # 欠損があっても止めない．
+```
+
+## Kaggleへの投稿
+
+```{r,cache=TRUE, warning=FALSE, message=FALSE}
+my_submission <- data.frame(PassengerId = my_test$PassengerId,
+                            Survived = my_pred)
+head(my_submission)
+```
+
+```{r,cache=TRUE, warning=FALSE, message=FALSE}
+my_submission %>% write_csv("titanic_submission.csv") # CSV形式で保存する．
+```

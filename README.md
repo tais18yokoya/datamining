@@ -23,6 +23,8 @@
 5|[分類（多値）](md/05-classification.md)|05-classification.Rmd
 6|[分類（2値）の準備](06-supplement.md)|
 7|[分類（2値）](md/07-classification.md)|07-classification.Rmd
+8|[教師なし学習](md/08-unsupervised.md)|08-unsupervised.Rmd
+9|[Excelで主成分分析](prcomp.xlsx)
 
 ファイルの使い方：
 
@@ -57,6 +59,10 @@ system("wget https://raw.githubusercontent.com/taroyabuki/datamining/master/05-c
 system("wget https://raw.githubusercontent.com/taroyabuki/datamining/master/07-classification.Rmd")
 ```
 
+```r
+# 8「教師なし学習」
+system("wget https://raw.githubusercontent.com/taroyabuki/datamining/master/08-unsupervised.Rmd")
+```
 
 ## レポート
 

@@ -76,3 +76,14 @@ system("wget https://raw.githubusercontent.com/taroyabuki/datamining/master/repo
 提出先：https://docs.google.com/forms/d/e/1FAIpQLSdryfqTuzbxoy3PV-_7r5Q_47gOtxB3OOLtNfnPLxSKZTCGUA/viewform
 
 締切：12月2日（月）13:00
+
+## 2回目
+
+```r
+# テンプレート
+system("wget https://raw.githubusercontent.com/taroyabuki/datamining/master/report2.Rmd")
+```
+
+提出先：https://docs.google.com/forms/d/e/1FAIpQLSdRCfzjCFNvmru0s86QSdvbzyDOZYCzbBzRL5dxP9sz7IRKAw/viewform
+
+締切：2月3日（月）24:00

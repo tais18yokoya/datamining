@@ -164,7 +164,7 @@ my_result <- hclust(my_dist, method = "complete") # hclust(my_dist)でもよい�
 
 # デンドログラムを描く．
 plot(my_result, hang = -1)
-rect.hclust(my_result_e, k = 3) # クラスター数が3の場合を赤線で示す．
+rect.hclust(my_result, k = 3) # クラスター数が3の場合を赤線で示す．
 
 # クラスター数が3の場合，各点がどのクラスターに属しているかを確認する．
 (my_cluster <- cutree(my_result, k = 3))

@@ -86,4 +86,4 @@ system("wget https://raw.githubusercontent.com/taroyabuki/datamining/master/repo
 
 提出先：https://docs.google.com/forms/d/e/1FAIpQLSdRCfzjCFNvmru0s86QSdvbzyDOZYCzbBzRL5dxP9sz7IRKAw/viewform
 
-締切：2月3日（月）24:00
+締切：2月3日（月）24:00 **この時間まで，1回目のレポートも提出できるようにしておきます．**

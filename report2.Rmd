@@ -77,6 +77,14 @@ tmp <- tribble(
 
 my_data <- as.data.frame(tmp[, -1])
 row.names(my_data) <- tmp$都道府県
+
+# 文字化けする場合は，次のコードで都道府県名をローマ字にする．
+tmp2 <- read_csv("https://gist.githubusercontent.com/taroyabuki/06f722485093623436ca0edafc3397c2/raw/e6dbf5ad118aa6650a487b5fcaed5c75ff118630/japan-prefectures.csv", col_names = F)
+my_table <- tmp2 %>% mutate(name = substr(tmp2$X1, 1, 2)) # 2文字でマッチング
+# head(my_table)
+kanji <- data.frame(name = substr(tmp$都道府県, 1, 2), stringsAsFactors = F)
+# head(kanji)
+row.names(my_data) <- inner_join(kanji, my_table, by = "name")$X2
 ```
 
 ## 手法
@@ -85,6 +93,9 @@ row.names(my_data) <- tmp$都道府県
 
 ```{r}
 # 主成分分析，階層的クラスター分析，非階層的クラスター分析のいずれかを実行する．
+my_dist <- dist(my_data)
+my_result <- hclust(my_dist)
+plot(my_result)
 ```
 
 ## 結果

@@ -79,6 +79,8 @@ system("wget https://raw.githubusercontent.com/taroyabuki/datamining/master/repo
 
 ## 2回目
 
+**都道府県名が文字化けする問題に対応しました（[report2.Rmd](report2.Rmd)）．**
+
 ```r
 # テンプレート
 system("wget https://raw.githubusercontent.com/taroyabuki/datamining/master/report2.Rmd")
